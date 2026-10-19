@@ -1,0 +1,35 @@
+# File policy-generator-config.yaml
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: hawtio
+## Policies default specification values
+policyDefaults:
+  # Namespace where the policies are going to be created in
+  namespace: policies
+  policySets:
+    - hawtio-clusters
+  # Default remediation action for the policies
+  remediationAction: enforce
+  # placement:
+  #   # Default placement rule with label definition for proper cluster selection
+  #   name: placement-devspaces
+  #   clusterSelectors:
+  #     env: dev
+placementBindingDefaults:
+  name: "binding-hawtio"
+# List of policies to be generated
+policies:
+    # name of the policy
+  - name: pol-hawtio
+    policySets:
+      - hawtio-clusters
+    manifests:
+      # reference to the manifests used as configuration templates 
+      - path: subscription.yaml
+policySets:
+  - description: The HawtIO Clusters policy set applies several policies
+      that will install DevSpaces.
+    name: hawtio-clusters
+    placement:
+      placementPath: input/hawtio-placement.yaml      
